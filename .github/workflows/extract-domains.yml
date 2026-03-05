@@ -37,7 +37,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          TAG="$(date -u '+%Y-%m-%d')"
+          TAG="$(date -u '+%Y%m%d%H%M')"
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release delete "$TAG" -y
             git push origin --delete "$TAG" 2>/dev/null || true
