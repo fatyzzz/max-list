@@ -1,0 +1,17 @@
+*.apk
+*.apk.*
+*.py
+*.sh
+*.txt.bak
+*.mp4
+extracted/
+decompiled/
+output
+*_dump.txt
+everything.txt
+ip_services.txt
+all.txt
+protocol_dump.txt
+zb7_dump.txt
+__pycache__/
+.claude/
