@@ -32,14 +32,16 @@ jobs:
       - name: Results
         run: cat ip-check.txt && echo "---" && cat ip-check-formatted.txt && echo "---" && cat vpndetect.txt
 
-      - name: Save
+      - name: Release
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add ip-check.txt ip-check-formatted.txt vpndetect.txt
-          if git diff --cached --quiet; then
-            echo "No changes"
-          else
-            git commit -m "update $(date -u '+%Y-%m-%d')"
-            git push
+          TAG="$(date -u '+%Y-%m-%d')"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release delete "$TAG" -y
+            git push origin --delete "$TAG" 2>/dev/null || true
           fi
+          gh release create "$TAG" \
+            --title "$TAG" \
+            --notes "Автообновление списков доменов" \
+            ip-check.txt ip-check-formatted.txt vpndetect.txt
